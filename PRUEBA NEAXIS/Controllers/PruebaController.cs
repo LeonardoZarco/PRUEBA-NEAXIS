@@ -2,21 +2,11 @@
 
 namespace PRUEBA_NEAXIS.Controllers
 {
-    public class Prueba : Controller
+    public class PruebaController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Prueba()
         {
             return View();
-
-
-
-
-
-
-
-
-
-
         }
     }
 }

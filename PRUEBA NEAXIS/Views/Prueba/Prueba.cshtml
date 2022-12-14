@@ -1,0 +1,98 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>JS Bin</title>
+</head>
+<body>
+    <button class="btn lost" style=""  on-leave="Apagado" on-hover="Encendido" onclick="consumirservicio()" id="Button">Consumir</button>
+    <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+    <div class="row">
+        <div class="col-md-12">
+            <textarea type="text" id="users" name="users" size="200" rows="10" cols="80"></textarea>
+        </div>
+    </div>
+</body>
+</html>
+
+<style>
+    .btn {
+        border-radius: 12px;
+        padding: 2px;
+  }
+
+        .btn:focus {
+            outline: none;
+        }
+
+        .btn.Apagado {
+            background-color: #ffffff;
+            border-radius: 12px;
+            border: 2px solid #e97c14;
+            color: #000000;
+        }
+
+        .btn.Encendido {
+            background-color: #e97c14;
+            border: 2px solid #e97c14;
+            border-radius: 12px;
+            color: #fff;
+            box-shadow: 5px 5px 10px 2px rgba(0,0,0,.8);
+        }
+</style>
+
+@section Scripts
+{
+<script type="text/javascript">
+    $('.btn.lost').hover(onHover, onLeave);
+
+    function onHover() {
+        $(this).removeClass('Apagado');
+        $(this).addClass('Encendido');
+        $(this).text($(this).attr('on-hover'));
+        $(this).text('Cancelar operación');
+    }
+    function onLeave() {
+        $(this).removeClass('Encendido');
+        $(this).addClass('Apagado');
+        $(this).text($(this).attr('on-leave'));
+        $(this).text('Cancelar operación');
+    }
+
+
+         function consumirservicio() {
+
+        $.ajax({
+            type: 'GET',
+            url: 'https://api.github.com/users',
+            dataType: 'json',
+           success: function (result) { 
+                for (var i=0; i<10; i++) {
+                   $('#users').val($('#users').val()  + result[i].login + ',' + result[i].repos_url + ',' + result[i].type + "\n");
+                 };
+            },
+            error: function (ex) {
+                alert('Failed.' + ex);
+            }
+        });
+    }
+
+
+    const Button = document.getElementById('Button');
+    Button.addEventListener('click', function () {
+        Button.disabled = true;
+        Button.style.opacity = 0.7;
+        Button.textContent = 'Ejecutando proceso...';
+
+        setTimeout(function () {
+            Button.textContent = 'Apagado';
+            Button.style.opacity = 1;
+            Button.disabled = false;
+        }, 5000);
+    });
+</script>
+}
